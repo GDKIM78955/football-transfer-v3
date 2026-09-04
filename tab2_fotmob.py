@@ -18,8 +18,7 @@ def render_tab2():
         p_xa = st.number_input("기대 도움 (xA)", 0.0, 40.0, value=6.2, step=0.5, key="v3_f_xa")
         p_rating = st.number_input("FotMob 시즌 평균 평점", 0.0, 10.0, value=7.42, step=0.01, key="v3_f_rating")
 
-    # 프로젝션 자동 산출 로직 (리그 수준 차이 등을 반영한 단순 추정 계수)
-    # 예시로 출전 시간 3000분 기준 환산 및 기대치 산출
+    # 프로젝션 자동 산출 로직
     proj_mins_val = 3000
     coef = proj_mins_val / max(p_mins, 500)
     proj_g = round(p_goals * coef * 0.95, 2)
@@ -42,7 +41,6 @@ def render_tab2():
         st.markdown("---")
         st.markdown("##### 📊 공격 포인트 효율성 비교 차트")
         
-        # 간단한 비교용 데이터프레임 및 바 차트 렌더링
         chart_data = pd.DataFrame(
             {
                 "지표": ["득점 (G)", "기대득점 (xG)", "도움 (A)", "기대도움 (xA)"],
