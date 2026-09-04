@@ -82,9 +82,9 @@ def render_tab1(history_df):
     trade_type_choice = st.radio("거래 유형 구분", ["🔵 영입 (IN)", "🔴 방출 / 판매 (OUT)"], index=0, horizontal=True, key="v3_trade_type")
     is_out = "방출" in trade_type_choice
 
-    col1, col2 = st.columns([1, 1])
+    col1, col2 = st.columns([1.2, 0.8])
     with col1:
-        st.subheader(f"📝 {'[수정 모드] ' if (edit_mode and t_row) else ''}{'방출(OUT)' if is_out else '영입(IN)'} 선수 & 계약 정보")
+        st.subheader(f"📝 {'[수정 모드] ' if (edit_mode and t_row) else ''}{'방출(OUT)' if is_out else '영입(IN)'} 선수 & 12대 가중치 입력")
         
         cs1, cs2 = st.columns(2)
         seasons = ["26/27 여름 (Summer)", "26/27 겨울 (Winter)", "기타"]
@@ -153,10 +153,19 @@ def render_tab1(history_df):
     stat_lbl = "⚖️ 적정가 (Fair Deal)" if abs(diff_val) <= (fair_val * 0.05) else (f"⚠️ 오버페이 (+{over_pct:.1f}%)" if diff_val > 0 else f"💎 혜자 ({over_pct:.1f}%)")
 
     with col2:
-        st.subheader("📊 분석 결과 요약")
+        st.subheader("📊 12대 가중치 분석 결과")
         st.metric("산출 적정가", f"€{fair_val:,.1f}만")
         st.metric("실제 거래액", f"€{actual_fee:,.1f}만")
         st.metric("가치 평가율", f"{over_pct:+,.1f}%")
+        st.info(f"판정: **{stat_lbl}**")
+
+        st.markdown("---")
+        st.markdown("##### 📌 적용된 주요 가중치 배율")
+        st.write(f"- 리그 보정: `{lw}`")
+        st.write(f"- 나이/포지션 보정: `{aw:.3f}`")
+        st.write(f"- 구단 티어: `{cw}`")
+        st.write(f"- 잔여 계약: `{conw}`")
+        st.write(f"- 부상/절박성: `{iw}` / `{uw}`")
 
     st.markdown("---")
     action_mode = "update" if (edit_mode and t_row) else "save_all"
